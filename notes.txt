@@ -1,2 +1,4 @@
-remove serial_com
-remove pickle from app
+#TODO
+dimmer template
+switch template
+graph template (test it, already have it)

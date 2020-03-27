@@ -8,3 +8,8 @@ Install PIP, you will get asked for this during the installation process.
 # Installing the template prerequisites
 pip install -r requirements.txt
 
+# Modify 
+Adapt the global variables under app/routes.py
+
+# Run the app 
+python server.py

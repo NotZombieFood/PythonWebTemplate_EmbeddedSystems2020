@@ -1,45 +1,52 @@
 # coding=utf-8
-# cd Documents/LDI/Flask-App-with-Arduino-support
 from app import app
 from flask import render_template, redirect, url_for, request, send_from_directory, request
-import os, pickle
+import os, pickle, time, datetime, serial
 
-def getLista():
-    with open('app/listas.pickle', 'rb') as f:
-        file = pickle.load(f)
-    return file
+########################## GLOBAL VARIABLES, MODIFY AS NECESSARY ###########################################
+COM_PORT = "COM10"
 
-@app.route('/')
+#########################  SERIAL COMMUNICATION ######################################
+
+serial_connection = serial.Serial(COM_PORT, 9600, timeout = 2)
+
+def uartSend(message: str):
+    serial_connection.write(str.encode(message))
+
+def uartReceive() -> str:
+    return serial_connection.readline().decode()
+
+def uartReceiveWaitUntilVal() -> str:
+    """
+        Recursive function for getting uart messages, be careful of using this.
+    """
+    message = serial_connection.readline().decode()
+    if message == '':
+        message = uartReceiveWaitUntilVal()
+    return message
+
+####################### BASE ROUTES & FUNCTIONS (DONT MODIFY) ##########################################################
+
+@app.route('/test')
 def base():
+    """
+        Route: /test
+        This is just for checking if your web server is wroking correctly 
+    """
     return "test"
 
 @app.route('/static/<path:path>')
 def send_static_files(path):
+    """
+        Route: /static/
+        This is used for delivering files to the users, can be uses for css, js, images, etc.
+    """
     return send_from_directory('static', path)
 
-@app.route('/monitor')
-def loadMonitor():
-    lista = getLista()
-    latest = lista["valores"][-1]
-    return render_template('monitor.html', value = latest)
-
-@app.route('/graph')
-def loadGraph():
-    lista = getLista()
-    print(str(lista["timestamps"]))
-    return render_template('grapher.html', list = lista["valores"], time_list = str(lista["timestamps"]))
-
-@app.route('/latest')
-def getLatestValue():
-    lista = getLista()
-    latest = lista["valores"][-1]
-    return str(latest)
 
 
-@app.route('/values')
-def getValues():
-    lista = getLista()
-    return str(lista)
+#return render_template('grapher.html', list = trace["val"], time_list = str(trace["ts"]))
+
 
 
 @app.errorhandler(404)

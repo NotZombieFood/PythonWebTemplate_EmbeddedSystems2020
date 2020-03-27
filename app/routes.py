@@ -25,15 +25,27 @@ def uartReceiveWaitUntilVal() -> str:
         message = uartReceiveWaitUntilVal()
     return message
 
+def serialTest():
+    uartSend("Test message for testing UART functionaliy \r\n")
+    uartSend("TEST TEST TEST TEST TEST \r\n")
+    with open('test.bin', 'rb') as test_binary:
+        test_objects = pickle.load(test_binary)
+        for test_object in test_objects:
+            uartSend(test_object + "\r\n")
+    uartSend("Test has finished \r\n")
+
+
+
 ####################### BASE ROUTES & FUNCTIONS (DONT MODIFY) ##########################################################
 
 @app.route('/test')
-def base():
+def test():
     """
         Route: /test
         This is just for checking if your web server is wroking correctly 
     """
-    return "test"
+    serialTest()
+    return "Test has been executed, check your UART"
 
 @app.route('/static/<path:path>')
 def send_static_files(path):

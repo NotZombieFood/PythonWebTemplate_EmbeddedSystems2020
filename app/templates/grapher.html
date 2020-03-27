@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="monitor">
+    <div class="monitor_box">
+        <canvas id="myChart" width="800" height="400"></canvas>
+    </div>
+</section>
+
+<script>
+    console.log("Script graph iniciando");
+    var list = {{list}};
+    var time_list  = {{time_list | safe}};
+    console.log(list);
+    var url = document.location.origin;
+
+    function getValue() {
+        $.get(url + "/latest", function (data) {
+            $("#sound_value").text(data);
+            let data_int = parseInt(data);
+            if (data_int > 60) {
+                alert("Sonido muy alto, debe tener cuidado");
+            }
+        });
+    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: time_list,
+        datasets: [{
+            label: 'Data from sensor',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: list
+        }]
+    },
+        // Configuration options go here
+        options: {}
+    });
+</script>
+{% endblock %}

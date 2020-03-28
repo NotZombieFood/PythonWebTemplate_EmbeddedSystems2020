@@ -1,8 +1,165 @@
 body {
     margin: 0;
     font-family: 'Lato', sans-serif;
+    background-color: #ebebeb;
+}
+.decorative_box{
+  border: 4px solid #79a0e1;
+  padding: 25px;
+  margin: 30px;
+  border-radius: 13px;
+  text-align: center;
+  transition: all 1s;
+}
+.decorative_box:hover{
+  background-color: #f0feff;
 }
 
+.decorative_box h2{
+  font-size: 18px;
+  margin-top: 9px;
+  color: #575757;
+}
+
+.decorative_box i{
+  font-size: 65px;
+  color: #79a0e1;
+}
+
+/* Toggle */
+label {
+  width: 150px;
+  height: 75px;
+  background-color: #d55050;
+  box-shadow: inset 0px 6px 0px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+input:checked ~ label {
+  background-color: #50d5a1;
+}
+
+input:checked ~ label div.s {
+  margin-left: 74px;
+}
+
+label div.s {
+  width: 70px;
+  height: 64px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  position: relative;
+  top: 3px;
+  left: 3px;
+  box-shadow: 0px 5px 0px 0px #d2d2d2;
+  cursor: pointer;
+}
+
+label div div.d {
+  width: 7px;
+  height: 7px;
+  background-color: #ebebeb;
+  position: relative;
+  border-radius: 2.5px;
+  box-shadow: inset 0px 1.5px 0px 0px rgba(0, 0, 0, 0.2);
+  position: absolute;
+}
+
+label div div.d:nth-child(1) {
+  left: 18px;
+  top: 15px;
+}
+
+label div div.d:nth-child(2) {
+  left: 32px;
+  top: 15px;
+}
+
+label div div.d:nth-child(3) {
+  left: 46px;
+  top: 15px;
+}
+
+label div div.d:nth-child(4) {
+  left: 18px;
+  top: 28px;
+}
+
+label div div.d:nth-child(5) {
+  left: 32px;
+  top: 28px;
+}
+
+label div div.d:nth-child(6) {
+  left: 46px;
+  top: 28px;
+}
+
+label div div.d:nth-child(7) {
+  left: 18px;
+  top: 42px;
+}
+
+label div div.d:nth-child(8) {
+  left: 32px;
+  top: 42px;
+}
+
+label div div.d:nth-child(9) {
+  left: 46px;
+  top: 42px;
+}
+
+input {
+  display: none;
+  appearance: none;
+}
+
+/* slider */
+.value {
+  border-bottom: 4px dashed #bdc3c7;
+  text-align: center;
+  font-weight: bold;
+  font-size: 70px;
+  letter-spacing: 3px;
+  width: 300px; 
+  height: 100px;
+  line-height: 60px;
+  margin: 40px auto;
+  text-shadow: white 2px 2px 2px;
+}
+input[type="range"] {
+  display: block;
+  -webkit-appearance: none;
+  background-color: #bdc3c7;
+  width: 300px;
+  height: 5px;
+  border-radius: 5px;
+  margin: 0 auto;
+  outline: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #e74c3c;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}​
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: white;
+    border: 2px solid #e74c3c;
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.6);
+  }
+
+
+/* #TODO: REMOVE THIS LINES
 #monitor{
   height: 100vh;
   width: 100%;
@@ -22,3 +179,5 @@ body {
 #myChart{
   background: white;
 }
+
+*/

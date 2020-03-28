@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- checkbox begins -->
+<div class="decorative_box">
+    <i class="far fa-lightbulb"></i>
+    <h2>Light #0</h2>
+    <input id="checkbox_light" type="checkbox">
+    <label for="checkbox_light">
+    <div class="s">
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    </div>
+    </label>
+</div>
+
+<div class="decorative_box">
+    <i class="fas fa-fan"></i>
+    <h2>Fan override</h2>
+    <input id="checkbox_fan" type="checkbox">
+    <label for="checkbox_fan">
+    <div class="s">
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    <div class="d"></div>
+    </div>
+    </label>
+</div>
+<!-- checkbox ends -->
+<div class="decorative_box">
+    <i class="far fa-lightbulb"></i>
+    <h2>Dimmer</h2>
+    <div class="value">0</div>
+    <input type="range" min="0" max="100" step="1" value="0">
+</div>
+    
+<script>
+    var command_fan = "{{command_fan}}";
+    var command_light = "{{command_light}}";
+    var command_dimmer = "{{command_dimmer}}";
+
+    var url = document.location.origin;
+    
+    var elem = document.querySelector('input[type="range"]');
+
+    var rangeValue = function(){
+        var newValue = elem.value;
+        var target = document.querySelector('.value');
+        target.innerHTML = newValue;
+        $.post(url + command_dimmer,  {"value":newValue, "id":0});
+    }
+
+    elem.addEventListener("input", rangeValue);
+
+    $('#checkbox_light').change(function () {
+        if($(this).is(":checked")){
+            sendToggle(command_light, '1');
+        }
+        else if($(this).is(":not(:checked)")){
+            sendToggle(command_light, '0');
+        }
+    });
+
+    $('#checkbox_fan').change(function () {
+        if($(this).is(":checked")){
+            sendToggle(command_fan, '1');
+        }
+        else if($(this).is(":not(:checked)")){
+            sendToggle(command_fan, '0');
+        }
+    });
+
+    function sendToggle(command, status) {
+        $.post(url + command,  {"status":status, "id":0});
+    }
+    
+</script>
+{% endblock %}
+

@@ -137,7 +137,7 @@ def demo_toggle():
 
 @app.route('/API/ToggleLight', methods=['POST'])
 def toggleLight_endpoint():
-    """ Toggle light, receives a json with status key, which if it is 1 will turn on the light. 0 or anything else turns off the light""""
+    """ Toggle light, receives a json with status key, which if it is 1 will turn on the light. 0 or anything else turns off the light"""
     req_data = request.form # using form as we might want to add support for extra lights in the future
     status = True if req_data['status'] == '1' else False
     toggleLight(status)
@@ -155,7 +155,7 @@ def dimmer_endpoint():
 
 @app.route('/API/ToggleFan', methods=['POST'])
 def toggleFan_endpoint():
-    """ Toggle fan, receives a json with status key, which if it is 1 will turn on the fan. 0 or anything else turns off the fan""""
+    """ Toggle fan, receives a json with status key, which if it is 1 will turn on the fan. 0 or anything else turns off the fan"""
     req_data = request.form # using form as we might want to add support for extra fans in the future
     status = True if req_data['status'] == '1' else False
     toggleFan(status)

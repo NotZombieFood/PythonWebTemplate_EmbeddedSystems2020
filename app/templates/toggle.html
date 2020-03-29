@@ -44,26 +44,44 @@
     <i class="far fa-lightbulb"></i>
     <h2>Dimmer</h2>
     <div class="value">0</div>
-    <input type="range" min="0" max="100" step="1" value="0">
+    <input type="range" min="0" max="100" step="1" value="0" id="dimmer0" data-submit='continuous' data-command='{{command_dimmer}}'>
 </div>
-    
+
+
+<div class="decorative_box">
+    <i class="far fa-lightbulb"></i>
+    <h2>Dimmer</h2>
+    <div class="value">0</div>
+    <input type="range" min="0" max="100" step="1" value="0" id="dimmer0" data-submit='button' data-command='{{command_dimmer}}'>
+    <i class="fas fa-check-circle submit-range"></i>
+</div>
+
 <script>
+    // Variables that are from python
     var command_fan = "{{command_fan}}";
     var command_light = "{{command_light}}";
-    var command_dimmer = "{{command_dimmer}}";
+
+    var current_data_command = '{{current_data_command}}';
 
     var url = document.location.origin;
     
-    var elem = document.querySelector('input[type="range"]');
+    $('.submit-range').on('click', function () {
+        let value = $(this).prev().val();
+        let command = $(this).prev().data('command');
+        $.post(url + command,  {"value":value, "id":0});
+    });
+    
 
-    var rangeValue = function(){
-        var newValue = elem.value;
-        var target = document.querySelector('.value');
-        target.innerHTML = newValue;
-        $.post(url + command_dimmer,  {"value":newValue, "id":0});
-    }
+    $('input[type=range]').on('input', function () {
+        let value = $(this).val();
+        let command = $(this).data('command');
+        $(this).prev().html(value);
+        if ($(this).data('submit') === 'continuous') { 
+            $.post(url + command,  {"value":value, "id":0});
+        }
+    });
+    
 
-    elem.addEventListener("input", rangeValue);
 
     $('#checkbox_light').change(function () {
         if($(this).is(":checked")){

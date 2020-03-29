@@ -2,10 +2,13 @@
 from app import app
 from flask import render_template, redirect, url_for, request, send_from_directory, request, jsonify
 import os, pickle, time, datetime, serial, threading
+from random import randint
 
 ########################## GLOBAL VARIABLES, MODIFY AS NECESSARY ###########################################
 COM_PORT = "COM10"
 READ_DATA_DELAY = 5 #This is on seconds
+SYNTHETIC_VALUE = 50 #This is for demo
+SYNTHETIC_COUNT = 99
 
 trace = {"val":[], "ts":[]}
 
@@ -36,6 +39,25 @@ def serialTest():
         for test_object in test_objects:
             uartSend(test_object + "\r\n")
     uartSend("Test has finished \r\n")
+
+
+def generateTrace(size = 100) -> dict:
+    """ this function will return a fake trace for demo purposes """
+    response_dict = {'ts':[], 'val':[]}
+    value = 50
+    for i in range(size):
+        response_dict['ts'].append(i)
+        response_dict['val'].append(value)
+        value = abs(value + (1 * randint(-3, 3)))
+    return response_dict
+
+
+def generateSyntheticVal():
+    global SYNTHETIC_VALUE
+    global SYNTHETIC_COUNT
+    SYNTHETIC_VALUE = abs(SYNTHETIC_VALUE + (1 * randint(-3, 3)))
+    SYNTHETIC_COUNT = SYNTHETIC_COUNT + 1
+    return {'value': SYNTHETIC_VALUE, 'timestamp': SYNTHETIC_COUNT}
 
 ####################### BASE ROUTES & FUNCTIONS (DONT MODIFY) ##########################################################
 
@@ -131,7 +153,22 @@ def demo_toggle():
     """ Run the demo about fan control, light control and dimmer """ 
     return render_template('toggle.html', command_light = "/API/ToggleLight", command_fan = "/API/ToggleFan", command_dimmer = '/API/Dimmer')
 
+@app.route('/demos/graph')
+def demo_graph():
+    trace_dict = generateTrace()
+    return render_template('grapher.html', data_list = trace_dict['val'], time_list = trace_dict['ts'], current_data_command = '/demos/synthetic_trace')
 
+@app.route('/demos/dashboard')
+def dashboard():
+    """ Run full demo """ 
+    trace_dict = generateTrace()
+    return render_template('full_demo.html', command_light = "/API/ToggleLight", command_fan = "/API/ToggleFan", command_dimmer = '/API/Dimmer', data_list = trace_dict['val'], time_list = trace_dict['ts'], current_data_command = '/demos/synthetic_trace')
+
+
+@app.route('/demos/synthetic_trace')
+def demo_synthetic_trace():
+    """ Get a continuous value for the trace """
+    return str(generateSyntheticVal())
 
 ######################################## API endpoints ########################################
 

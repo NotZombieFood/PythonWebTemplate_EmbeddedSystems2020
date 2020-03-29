@@ -8,35 +8,38 @@
 </section>
 
 <script>
-    console.log("Script graph iniciando");
-    var list = {{list}};
-    var time_list  = {{time_list | safe}};
-    console.log(list);
+    var data_list = {{data_list}};
+    var time_list  = {{time_list}};
+    var current_data_command = '{{current_data_command}}';
     var url = document.location.origin;
 
-    function getValue() {
-        $.get(url + "/latest", function (data) {
-            $("#sound_value").text(data);
-            let data_int = parseInt(data);
-            if (data_int > 60) {
-                alert("Sonido muy alto, debe tener cuidado");
-            }
-        });
-    }
     var ctx = document.getElementById('myChart').getContext('2d');
     var myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
         labels: time_list,
         datasets: [{
-            label: 'Data from sensor',
+            label: 'Temperature in Celcius',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: list
+            data: data_list
         }]
     },
         // Configuration options go here
         options: {}
     });
+
+    function addEntry(value, timestamp){
+        myLineChart.data.labels.push(timestamp);
+        myLineChart.data.datasets[0].data.push(value);
+        myLineChart.update();
+    }
+    var intervalID = setInterval(function(){
+        $.get( url + current_data_command, function( data ) {
+            let parsed_data = JSON.parse(data.replace(/'/g,'"'))
+            addEntry(parsed_data['value'], parsed_data['timestamp']);
+        });
+    }, 1000);
+
 </script>
 {% endblock %}

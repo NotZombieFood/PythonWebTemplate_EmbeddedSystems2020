@@ -13,3 +13,14 @@ Adapt the global variables under app/routes.py
 
 # Run the app 
 python server.py
+
+
+## linux command for enabling virtual uart
+
+[12:44 PM] Gerardo Cruz Delgado
+    
+
+pip install -r .\requirements.txt
+
+
+socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11
